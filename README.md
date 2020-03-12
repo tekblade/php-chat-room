@@ -1,3 +1,3 @@
 ### composer install
-### set user page is available at /login route
+### main page is /login route
 ### not sure if php handles automatically preventing critical section issue - saving messages from users into the file
