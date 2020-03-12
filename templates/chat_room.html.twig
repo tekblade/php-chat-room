@@ -1,0 +1,83 @@
+{% block javascripts %} 
+    <script language = "javascript" src = "https://code.jquery.com/jquery-2.2.4.min.js"></script> 
+    <script language = "javascript">  
+        $(document).ready(function(){   
+            $("#btnSend").on("click", function(event){
+            saveMessage();
+            });
+        refreshChat();
+        });
+        function refreshChat(){
+            setInterval( function() { getChatHistory(); }, 1000);
+        }
+        function saveMessage(){
+             $.ajax({
+               type: 'get',
+               url: '/save_ajax',
+               data: { message:  $('#chatInput').val() } ,
+               async:      true,  
+               success: function(text){
+                   
+               }
+            });
+            
+            $("#chatInput").val('');
+        }
+        function getChatHistory(){
+            $.ajax({
+               type: 'get',
+               url: '/load_ajax',
+               dataType: 'html',
+               async:      true,  
+               success: function(text){
+                   $('#view_ajax').html('');
+                   $('#view_ajax').append(text);
+               }
+            });
+        }
+        function helpFunction(){
+            return $("#chatInput").val();
+        }
+        
+    </script>
+{% endblock %}
+{% block stylesheets %}
+<style>
+#view_ajax {
+  display: block;
+  overflow: auto;
+  width: 900px; 
+  height: 400px; 
+  border: 1px solid #333;
+  margin-top: 20px;
+}
+
+#ajaxForm{
+  display: block;
+  width: 500px; 
+  height: 50px;
+  margin-top: 10px;
+}
+
+#chatInput{
+  width: 454px;
+}
+p {
+    font-size: 15px;
+    margin:0;
+}
+</style>
+{% endblock %}
+{% block body %} 
+<html>
+  <head>
+    <title>Chat Room Example</title>
+  <body>
+      <h2>welcome {{ user }}<h2>
+    <div id="view_ajax"></div>
+    <div id="ajaxForm">
+      <input type="text" id="chatInput" /><input type="button" value="Send" id="btnSend" />
+    </div>
+  </body>
+</html>
+{% endblock %} 
